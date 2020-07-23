@@ -9,10 +9,16 @@ let shipWidth = 40;
 let shipXPosOne = (canvas.width - shipWidth) / 2;
 let shipXPosTwo = (canvas.width / 2) - (shipWidth / 4);
 
-let rightPressed = false;
-let leftPressed = false;
+let laserXPos = shipXPosTwo + 7.5;
+let laserYPos = canvas.height;
+
+let fireInterval;
 
 // Keys--------------------------------------------------------------------------------------------------------------------------
+
+let rightPressed = false;
+let leftPressed = false;
+let spacePressed = false;
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -27,6 +33,9 @@ function keyDownHandler(e) {
     else if (e.key === "Left" || e.key === "ArrowLeft") {
         leftPressed = true;
     }
+    else if (e.keyCode === 32) {
+        spacePressed = true;
+    }
 }
 
 function keyUpHandler(e) {
@@ -36,6 +45,9 @@ function keyUpHandler(e) {
     }
     else if (e.key == "Left" || e.key == "ArrowLeft") {
         leftPressed = false;
+    }
+    else if (e.keyCode === 32) {
+        spacePressed = false;
     }
 }
 
@@ -59,25 +71,51 @@ function drawShip() {
     ctx.closePath();
 }
 
+function drawLaser() {
+    ctx.beginPath();
+    ctx.rect(laserXPos, laserYPos, 5, 5);
+    ctx.fillStyle = "white";
+    ctx.fill();
+    ctx.closePath();
+}
+
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     drawShip();
+    drawLaser();
 
     if (rightPressed) {
-        shipXPosOne += 7;
-        shipXPosTwo += 7;
+        clearInterval(fireInterval);
+        shipXPosOne += 3;
+        shipXPosTwo += 3;
+        laserXPos = shipXPosTwo + 7.5;
         if (shipXPosOne + shipWidth > canvas.width) {
             shipXPosOne = canvas.width - shipWidth;
             shipXPosTwo = (canvas.width - shipWidth) + 10;
         }
     }
     else if (leftPressed) {
-        shipXPosOne -= 7;
-        shipXPosTwo -= 7;
+        clearInterval(fireInterval);
+        shipXPosOne -= 3;
+        shipXPosTwo -= 3;
+        laserXPos = shipXPosTwo + 7.5;
         if (shipXPosOne < 0) {
             shipXPosOne = 0;
             shipXPosTwo = 10;
+        }
+    }
+    if (spacePressed) {
+        fireInterval = setInterval(() => {
+            console.log("fireInterval: " + fireInterval);
+            laserYPos -= 10;
+        }, 500);
+        if (fireInterval > 15) {
+            clearInterval(fireInterval);
+        }
+        if (laserYPos < 0) {
+            laserYPos = canvas.height;
+
         }
     }
 }
