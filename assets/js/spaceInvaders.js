@@ -5,49 +5,45 @@ let ctx = canvas.getContext("2d");
 
 let shipHeight = 10;
 let shipWidth = 40;
-// Starting x position of the ship
+
 let shipXPosOne = (canvas.width - shipWidth) / 2;
 let shipXPosTwo = (canvas.width / 2) - (shipWidth / 4);
 
 let laserXPos = shipXPosTwo + 7.5;
 let laserYPos = canvas.height;
 
-let fireInterval;
+let interval;
 
 // Keys--------------------------------------------------------------------------------------------------------------------------
 
 let rightPressed = false;
 let leftPressed = false;
-let spacePressed = false;
+//let spacePressed = false;
 
-document.addEventListener("keydown", keyDownHandler, false);
-document.addEventListener("keyup", keyUpHandler, false);
+document.addEventListener("keyup", keyUpHandler);
+document.addEventListener("keydown", keyDownHandler);
 
 // Functions---------------------------------------------------------------------------------------------------------------------
 
 function keyDownHandler(e) {
-    // When left or right key is pressed --> corresponding variable = true
-    if (e.key === "Right" || e.key === "ArrowRight") {
-        rightPressed = true;
-    }
-    else if (e.key === "Left" || e.key === "ArrowLeft") {
-        leftPressed = true;
-    }
-    else if (e.keyCode === 32) {
-        spacePressed = true;
+    switch(e.keyCode) {
+        case 39: rightPressed = true;
+        break;
+        case 37: leftPressed = true;
+        break;
+        //case 32: spacePressed = true;
+        //break;
     }
 }
 
 function keyUpHandler(e) {
-    // When left or right key stop to be pressed --> corresponding variable = false
-    if (e.key == "Right" || e.key == "ArrowRight") {
-        rightPressed = false;
-    }
-    else if (e.key == "Left" || e.key == "ArrowLeft") {
-        leftPressed = false;
-    }
-    else if (e.keyCode === 32) {
-        spacePressed = false;
+    switch(e.keyCode) {
+        case 39: rightPressed = false;
+        break;
+        case 37: leftPressed = false;
+        break;
+        //case 32: spacePressed = false;
+        //break;
     }
 }
 
@@ -71,6 +67,26 @@ function drawShip() {
     ctx.closePath();
 }
 
+function moveRight() {
+    shipXPosOne += 3;
+    shipXPosTwo += 3;
+    laserXPos = shipXPosTwo + 7.5;
+    if (shipXPosOne + shipWidth > canvas.width) {
+        shipXPosOne = canvas.width - shipWidth;
+        shipXPosTwo = (canvas.width - shipWidth) + 10;
+    }
+}
+
+function moveLeft() {
+    shipXPosOne -= 3;
+    shipXPosTwo -= 3;
+    laserXPos = shipXPosTwo + 7.5;
+    if (shipXPosOne < 0) {
+        shipXPosOne = 0;
+        shipXPosTwo = 10;
+    }
+}
+
 function drawLaser() {
     ctx.beginPath();
     ctx.rect(laserXPos, laserYPos, 5, 5);
@@ -79,44 +95,24 @@ function drawLaser() {
     ctx.closePath();
 }
 
+//function shootLaser() {
+    
+//}
+
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     drawShip();
     drawLaser();
 
+    /*if (spacePressed) {
+        shootLaser();
+    }*/
     if (rightPressed) {
-        clearInterval(fireInterval);
-        shipXPosOne += 3;
-        shipXPosTwo += 3;
-        laserXPos = shipXPosTwo + 7.5;
-        if (shipXPosOne + shipWidth > canvas.width) {
-            shipXPosOne = canvas.width - shipWidth;
-            shipXPosTwo = (canvas.width - shipWidth) + 10;
-        }
+        moveRight();
     }
-    else if (leftPressed) {
-        clearInterval(fireInterval);
-        shipXPosOne -= 3;
-        shipXPosTwo -= 3;
-        laserXPos = shipXPosTwo + 7.5;
-        if (shipXPosOne < 0) {
-            shipXPosOne = 0;
-            shipXPosTwo = 10;
-        }
-    }
-    if (spacePressed) {
-        fireInterval = setInterval(() => {
-            console.log("fireInterval: " + fireInterval);
-            laserYPos -= 10;
-        }, 500);
-        if (fireInterval > 15) {
-            clearInterval(fireInterval);
-        }
-        if (laserYPos < 0) {
-            laserYPos = canvas.height;
-
-        }
+    if (leftPressed) {
+        moveLeft();
     }
 }
 
