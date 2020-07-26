@@ -1,6 +1,6 @@
 // Classes-----------------------------------------------------------------------------------------------------------------------
 
-class alienOne {
+class AlienOne {
     constructor(ctx, x = null, y = null) {
         this.ctx = ctx;
         this.x = x;
@@ -30,12 +30,41 @@ class alienOne {
     }
 }
 
+class AlienTwo {
+    constructor(ctx, x = null, y = null) {
+        this.ctx = ctx;
+        this.x = x;
+        this.y = y;
+    }
+    drawAlienTwo(ctx, x, y) {
+        ctx.beginPath();
+        ctx.rect(x+20, y, 15, 5);
+        ctx.rect(x+10, y+5, 35, 5);
+        ctx.rect(x+5, y+10, 45, 5);
+        ctx.rect(x, y+15, 10, 5);
+        ctx.rect(x+20, y+15, 15, 5);
+        ctx.rect(x+45, y+15, 10, 5);
+        ctx.rect(x, y+20, 55, 5);
+        ctx.rect(x+15, y+25, 10, 5);
+        ctx.rect(x+30, y+25, 10, 5);
+        ctx.rect(x+10, y+30, 10, 5);
+        ctx.rect(x+25, y+30, 5, 5);
+        ctx.rect(x+35, y+30, 10, 5);
+        ctx.rect(x, y+35, 10, 5);
+        ctx.rect(x+45, y+35, 10, 5);
+        ctx.fillStyle = "white";
+        ctx.fill();
+        ctx.closePath();
+    }
+}
+
 // Variables---------------------------------------------------------------------------------------------------------------------
 
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
 
-let aliens = [];
+let aliensOne = [];
+let aliensTwo = [];
 
 let shipHeight = 10;
 let shipWidth = 40;
@@ -135,17 +164,15 @@ function drawLaser() {
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+   
+    for (let i = 0; i < 6; i++) {
+        aliensOne[i] = new AlienOne();
+        aliensOne[i].drawAlienOne(ctx, 10 + (i*65), 10);
+    }
 
-    /*let alien = new alienOne();
-    alien.drawAlienOne(ctx, 10, 10);
-
-    let alien2 = new alienOne();
-    alien2.drawAlienOne(ctx, 75, 10);*/
-
-    
-    for (let i = 0; i <= 6; i++) {
-        aliens[i] = new alienOne();
-        aliens[i].drawAlienOne(ctx, 10 + (i*65), 10);
+    for (let i = 0; i < 6; i++) {
+        aliensTwo[i] = new AlienTwo();
+        aliensTwo[i].drawAlienTwo(ctx, 10 + (i*65), 60);
     }
 
     drawShip();
