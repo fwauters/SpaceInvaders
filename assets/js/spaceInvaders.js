@@ -63,8 +63,7 @@ class AlienTwo {
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
 
-let aliensOne = [];
-let aliensTwo = [];
+let aliens = [];
 
 let shipHeight = 10;
 let shipWidth = 40;
@@ -162,10 +161,26 @@ function drawLaser() {
     
 //}
 
+function drawAliens() {
+    for (let c = 0; c < 6; c++) {
+        aliens[c] = [];
+        for (let r = 0; r < 4; r++) {
+            if (r === 0 || r === 2) {
+                aliens[c][r] = new AlienOne();
+                aliens[c][r].drawAlienOne(ctx, 10 + (c*65), 10 + (r*50));
+            }
+            else {
+                aliens[c][r] = new AlienTwo();
+                aliens[c][r].drawAlienTwo(ctx, 10 + (c*65), 10 + (r*50));
+            }
+        }
+    }
+}
+
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
    
-    for (let i = 0; i < 6; i++) {
+    /*for (let i = 0; i < 6; i++) {
         aliensOne[i] = new AlienOne();
         aliensOne[i].drawAlienOne(ctx, 10 + (i*65), 10);
     }
@@ -173,7 +188,9 @@ function draw() {
     for (let i = 0; i < 6; i++) {
         aliensTwo[i] = new AlienTwo();
         aliensTwo[i].drawAlienTwo(ctx, 10 + (i*65), 60);
-    }
+    }*/
+
+    drawAliens();
 
     drawShip();
     drawLaser();
