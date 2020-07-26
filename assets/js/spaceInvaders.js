@@ -58,6 +58,31 @@ class AlienTwo {
     }
 }
 
+class Spaceship {
+    constructor(ctx, spaceshipXPos = null) {
+        this.ctx = ctx;
+        this.spaceshipXPos = spaceshipXPos;
+    }
+    drawSpaceship() {
+        ctx.beginPath();
+        ctx.rect(spaceshipXPos+5, canvas.height-10, 15, 5);
+        ctx.rect(spaceshipXPos+35, canvas.height-10, 15, 5);
+        ctx.rect(spaceshipXPos, canvas.height-15, 55, 5);
+        ctx.rect(spaceshipXPos, canvas.height-20, 20, 5);
+        ctx.rect(spaceshipXPos+25, canvas.height-20, 5, 5);
+        ctx.rect(spaceshipXPos+35, canvas.height-20, 20, 5);
+        ctx.rect(spaceshipXPos+5, canvas.height-25, 15, 5);
+        ctx.rect(spaceshipXPos+35, canvas.height-25, 15, 5);
+        ctx.rect(spaceshipXPos+15, canvas.height-30, 10, 5);
+        ctx.rect(spaceshipXPos+30, canvas.height-30, 10, 5);
+        ctx.rect(spaceshipXPos+20, canvas.height-40, 15, 10);
+        ctx.rect(spaceshipXPos+25, canvas.height-45, 5, 5);
+        ctx.fillStyle = "white";
+        ctx.fill();
+        ctx.closePath();
+    }
+}
+
 // Variables---------------------------------------------------------------------------------------------------------------------
 
 let canvas = document.getElementById("myCanvas");
@@ -129,6 +154,28 @@ function drawShip() {
     ctx.closePath();
 }
 
+let spaceshipXPos = (canvas.width/2) - 27.5;
+
+/*
+function drawSpaceship() {
+    ctx.beginPath();
+    ctx.rect(spaceshipXPos+5, canvas.height-10, 15, 5);
+    ctx.rect(spaceshipXPos+35, canvas.height-10, 15, 5);
+    ctx.rect(spaceshipXPos, canvas.height-15, 55, 5);
+    ctx.rect(spaceshipXPos, canvas.height-20, 20, 5);
+    ctx.rect(spaceshipXPos+25, canvas.height-20, 5, 5);
+    ctx.rect(spaceshipXPos+35, canvas.height-20, 20, 5);
+    ctx.rect(spaceshipXPos+5, canvas.height-25, 15, 5);
+    ctx.rect(spaceshipXPos+35, canvas.height-25, 15, 5);
+    ctx.rect(spaceshipXPos+15, canvas.height-30, 10, 5);
+    ctx.rect(spaceshipXPos+30, canvas.height-30, 10, 5);
+    ctx.rect(spaceshipXPos+20, canvas.height-40, 15, 10);
+    ctx.rect(spaceshipXPos+25, canvas.height-45, 5, 5);
+    ctx.fillStyle = "white";
+    ctx.fill();
+    ctx.closePath();
+}
+*/
 function moveRight() {
     shipXPosOne += 3;
     shipXPosTwo += 3;
@@ -179,20 +226,13 @@ function drawAliens() {
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-   
-    /*for (let i = 0; i < 6; i++) {
-        aliensOne[i] = new AlienOne();
-        aliensOne[i].drawAlienOne(ctx, 10 + (i*65), 10);
-    }
-
-    for (let i = 0; i < 6; i++) {
-        aliensTwo[i] = new AlienTwo();
-        aliensTwo[i].drawAlienTwo(ctx, 10 + (i*65), 60);
-    }*/
 
     drawAliens();
 
-    drawShip();
+    let spaceship = new Spaceship();
+    spaceship.drawSpaceship(ctx, spaceshipXPos);
+
+    //drawShip();
     drawLaser();
 
     /*if (spacePressed) {
